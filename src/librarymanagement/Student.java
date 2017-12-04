@@ -12,7 +12,8 @@ public class Student {
     private String std_password;
     private String std_type;
     StdLibraryInfo slbinfo;
-    private SimpleDoubleProperty due;
+    private double due;
+    private String accountstatus;
     
     
     //Constuctor
@@ -21,6 +22,8 @@ public class Student {
         this.std_username = new SimpleStringProperty(std_username);
         this.std_type = std_type;
         slbinfo = new StdLibraryInfo(p,q);
+         this.due = 0.0;
+         accountstatus = "NULL";
     }
 
     
@@ -48,11 +51,19 @@ public class Student {
     }
 
     public void setDue(double due) {
-        this.due = new SimpleDoubleProperty(due);
+        this.due = due;
     }
 
     public double getDue() {
-        return due.get();
+        return due;
+    }
+
+    public String getAccountstatus() {
+        return accountstatus;
+    }
+
+    public void setAccountstatus(String accountstatus) {
+        this.accountstatus = accountstatus;
     }
     
    

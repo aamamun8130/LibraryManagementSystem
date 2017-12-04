@@ -705,6 +705,7 @@ public class LBXMLController implements Initializable {
                   sl.slbinfo.setStdbookname(bk.getBookname());
                   sl.slbinfo.setStdbooksubdate(setbooksubmissionField.getText());
                   borrow_b_noti_lab.setText("Lent successful!!!");
+                  sl.setAccountstatus("NULL");
                   ll = 1;
                   }
               }
@@ -908,8 +909,9 @@ public class LBXMLController implements Initializable {
         
         for(Student std : stdList){
             if(std.getSTD_USERNAME().equals(acc_u_n_field.getText())){
-                 //std.slbinfo.setStddue(0.0);
+                 std.setDue(0.0);
                  p_s_n_lab.setText("Due Paid Sucessful");
+                 System.out.println(std.getDue());
                 
             }
             
@@ -1350,25 +1352,43 @@ public class LBXMLController implements Initializable {
     void DueStudentListButtonAction(ActionEvent event){
         int fstdtotal = 0;
         double totaldue = 0.0;
+        
+        for(Student s : stdList){
+            System.out.println(s.getStd_username() + " " + s.getDue());
+            System.out.println(s.slbinfo.getStdbooksubdate());
+        }
           
         for(Student stdl : stdList){
          
-            if("17/12/01".compareTo(stdl.slbinfo.getStdbooksubdate()) > 0){
+            if("17/12/01".compareTo(stdl.slbinfo.getStdbooksubdate()) > 0 && stdl.getAccountstatus().equals("NULL")  ){
                 stdl.setDue(500.0);
+                stdl.setAccountstatus("NO");
                 fstdtotal++;
                 totaldue = totaldue + 500.0;
             }
             
-            else {
+            else if(stdl.getDue()==500.0) {
                 
+                
+            }
+            
+            else{
                 stdl.setDue(0.0);
             }
         }
-        finestdtable.setItems(stdList);
+        finestdtable.setItems(FXCollections.observableArrayList( stdList));
+        finestdtable.getItems().clear();
+         finestdtable.getItems().addAll(stdList);
         finestdusernameclumn.setCellValueFactory(new PropertyValueFactory<>("std_username"));
         finestdduecolumn.setCellValueFactory(new PropertyValueFactory<>("due"));
         TotalDueStdNoLab.setText(Integer.toHexString(fstdtotal));
         TotalDueStdLab.setText(Double.toString(totaldue));
+        
+        
+        for(Student s : stdList){
+            System.out.println(s.getStd_username() + " " + s.getDue());
+            System.out.println(s.slbinfo.getStdbooksubdate());
+        }
         
         
     }
