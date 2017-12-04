@@ -7,7 +7,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class Student {
+//Abstract class
+
+public abstract class Student {
     private SimpleStringProperty std_username;
     private String std_password;
     private String std_type;
@@ -24,9 +26,10 @@ public class Student {
         slbinfo = new StdLibraryInfo(p,q);
          this.due = 0.0;
          accountstatus = "NULL";
+         
+         
     }
-
-    
+    // Instance variable getter and setter start 
     
     String getSTD_TYPE(){
         return std_type;
@@ -42,14 +45,6 @@ public class Student {
         return std_username.get();
     }
     
-       
-    public void canSearchBook(ObservableList<Book> bookLst ){
-        for(Book blist : bookLst){
-            
-        }
-        
-    }
-
     public void setDue(double due) {
         this.due = due;
     }
@@ -66,7 +61,87 @@ public class Student {
         this.accountstatus = accountstatus;
     }
     
-   
+    // Instance variable getter and setter end
+    
+    //All Method Start From
+    
+    public void canSearchBook(ObservableList<Book> bookLst ){
+        for(Book blist : bookLst){
+            
+        }
+        
+    }
+    
+    public void createAccount(ObservableList<Student> sl,ForeigenStudent fs,String un, String ps){
+        fs = new ForeigenStudent(un,ps,"foreigen");
+        sl.add(fs);
+    }
+    
+    public void createAccount(ObservableList<Student> sl,LocalStudent ls,String un, String ps){
+        ls = new LocalStudent(un,ps,"local");
+        sl.add(ls);
+    }
+    public  int canLoginAccount(ObservableList<Student> h,int p, int q,String su,String sp,StdInFo lif){
+          int s=4,t=4,u=4;
+        for(Student std : h){
+            if(p==1 && std.getSTD_TYPE().equals("foreigen") && std.getSTD_PASSWORD().equals(sp) && std.getSTD_USERNAME().equals(su) ){
+                lif.setUname(std.getSTD_USERNAME());
+                lif.setUtype(std.getSTD_TYPE());
+                lif.setUbname(std.slbinfo.getStdbookname());
+                lif.setUbsubdate(std.slbinfo.getStdbooksubdate());
+                lif.setUdue(std.getDue());
+                
+                
+                s = 0;
+            }
+            else if(q==1 && std.getSTD_TYPE().equals("local") && std.getSTD_USERNAME().equals(su) && std.getSTD_PASSWORD().equals(sp) ){
+                lif.setUname(std.getSTD_USERNAME());
+                lif.setUtype(std.getSTD_TYPE());
+                lif.setUbname(std.slbinfo.getStdbookname());
+                lif.setUbsubdate(std.slbinfo.getStdbooksubdate());
+                lif.setUdue(std.getDue());
+                t = 1;
+            }
+            else{
+                u = 2;   
+                    }
+        }
+        if(s==0){
+          return 0;  
+        }
+        else if(t==1){
+           return 1; 
+        }
+        else if(u==2){
+            return 2;
+        }
+    
+        return 3;
+    }
+    
+    public void SearchBook(){
+        
+    }
+    
+    public int SeeLbInfo(StdInFo si){
+       if(!si.equals(null)){ 
+       return 1;
+       }
+       return 0;
+    }
+    public double CanSeebdtFine(StdInFo si){
+        return si.getUdue();
+    }
+    
+    public boolean CanlogOut(){
+        return true;
+    }
+    
+    // Abstract Method
+    
+    abstract double calculateDollerCurrency(StdInFo si);
+    
+    // method end
     
     
 }

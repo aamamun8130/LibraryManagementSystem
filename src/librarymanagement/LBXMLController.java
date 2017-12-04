@@ -42,6 +42,9 @@ public class LBXMLController implements Initializable {
         Class.forName("org.sqlite.JDBC");
         conn = DriverManager.getConnection("jdbc:sqlite:librarymanagement.sqlite");
     }
+    StdInFo lif;
+   
+    
     //student optoin all design controll start from
     
         
@@ -74,7 +77,7 @@ public class LBXMLController implements Initializable {
     LocalStudent lstd;
     int loc_std = 0;
     int fore_std = 0;
-    ObservableList<Student>stdList = FXCollections.observableArrayList();
+    public ObservableList<Student>stdList = FXCollections.observableArrayList();              /////
     
      @FXML
     void st_registration(ActionEvent event) {
@@ -84,16 +87,19 @@ public class LBXMLController implements Initializable {
         else{
            reg_warning.setText("Submission Successful");
            if(fore_std==1){
-               fstd = new ForeigenStudent(st_uname.getText(),st_pass.getText(),"foreigen");
-                stdList.add(fstd);
+               fstd.createAccount(stdList,fstd,st_uname.getText(),st_pass.getText());     //    std create account method
+               //fstd = new ForeigenStudent(st_uname.getText(),st_pass.getText(),"foreigen");
+               //stdList.add(fstd);
                
            }
            if(loc_std==1){
-                lstd = new LocalStudent(st_uname.getText(),st_pass.getText(),"local");
-               stdList.add(lstd);
+               lstd.createAccount(stdList,lstd,st_uname.getText(),st_pass.getText());
+                //lstd = new LocalStudent(st_uname.getText(),st_pass.getText(),"local");
+               //stdList.add(lstd);
            }
            clearCreateAccountField();
         }
+       
         
         
     }
@@ -208,12 +214,12 @@ public class LBXMLController implements Initializable {
        
        
        
-     void assignStdInfo(Student std){
-       std_uname = std.getSTD_USERNAME();
-       std_ubooksubdate = std.slbinfo.getStdbooksubdate();
-       std_bname = std.slbinfo.getStdbookname();
-       std_fine = std.slbinfo.getStddue();
-       std_typ = std.getSTD_TYPE(); 
+     void assignStdInfo(){
+       std_uname = lif.getUname();
+       std_ubooksubdate = lif.getUbsubdate();
+       std_bname = lif.getUbname();
+       std_fine = lif.getUdue();
+       std_typ = lif.getUtype(); 
      }
      
      @FXML
@@ -223,9 +229,9 @@ public class LBXMLController implements Initializable {
     
     @FXML
     void loginButton2Action(ActionEvent event) {
-    
-        for(Student std : stdList){
-        if(fore_std==1 && std.getSTD_TYPE().equals("foreigen") && std.getSTD_PASSWORD().equals(log_p_word_Id.getText()) && std.getSTD_USERNAME().equals(log_u_name_Id.getText())){
+         //canLoginAccount(stdList,fore_std,loc_std,log_u_name_Id.getText(),log_p_word_Id.getText())
+     
+        if(fstd.canLoginAccount(stdList,fore_std,loc_std,log_u_name_Id.getText(),log_p_word_Id.getText(),lif)==0){
             plate.setVisible(true);
             loginNavigation.setVisible(false);
             createAccountNavigation.setVisible(false);
@@ -236,9 +242,9 @@ public class LBXMLController implements Initializable {
             login = true;
             enp_sList = 1;
             
-            assignStdInfo(std);     // asssign std info function calll
+            assignStdInfo();     // asssign std info function calll
          }
-         else  if (loc_std==1 && std.getSTD_TYPE().equals("local") && std.getSTD_USERNAME().equals(log_u_name_Id.getText()) && std.getSTD_PASSWORD().equals(log_p_word_Id.getText()) ){
+         else  if (lstd.canLoginAccount(stdList,fore_std,loc_std,log_u_name_Id.getText(),log_p_word_Id.getText(),lif)==1){
                  plate.setVisible(true);
             loginNavigation.setVisible(false);
             createAccountNavigation.setVisible(false);
@@ -248,24 +254,28 @@ public class LBXMLController implements Initializable {
             login = true;
             enp_sList = 1;
             stypelab.setText("local");
-            assignStdInfo(std);       // asssign std info function calll
+            assignStdInfo();       // asssign std info function calll
            }
          
-         else{
+         else if(lstd.canLoginAccount(stdList,fore_std,loc_std,log_u_name_Id.getText(),log_p_word_Id.getText(),lif)==2){
              
                 login_alarm.setText("Alarm!!! Wrong Entry");
                 enp_sList = 1;
          } 
-      }
-       if(enp_sList != 1) {
-           login_alarm.setText("No Student Account Found!");
-       }
-        
+        else
+            {
+                 login_alarm.setText("No Student Account Found!");
+            }
+          //System.out.println(loc_std+"  "+fore_std);
+       // for(Student d : stdList){
+       //     System.out.println(d.getSTD_USERNAME()+ " "+ d.getSTD_PASSWORD());
+       // }
             
        }
     
     @FXML
     void logoutAction(MouseEvent event) {
+        if(lstd.CanlogOut()){                                                  // Log out function call
         login = false;
         plate.setVisible(false);
         selmover.setVisible(true);
@@ -273,6 +283,7 @@ public class LBXMLController implements Initializable {
         bookSearchpane.setVisible(true);
         yourlibinfo.setVisible(false);
         stdfinePane.setVisible(false);
+        }
     }
     
     @FXML
@@ -345,9 +356,12 @@ public class LBXMLController implements Initializable {
         yourlibinfo.setVisible(true);
         bookSearchpane.setVisible(false);
          stdfinePane.setVisible(false);
-         stdLbInfo_u_name_lab.setText(std_uname);
-         stdLbInfo_u_b_name_lab1.setText(std_bname);                     ///very inportant area lib info std
-         stdLbInfo_u_b_subDate_lab11.setText(std_ubooksubdate);
+          if(lstd.SeeLbInfo(lif)==1) {                                                                    // std see lib info function
+         stdLbInfo_u_name_lab.setText(lif.getUname());
+         stdLbInfo_u_b_name_lab1.setText(lif.getUbname());                     ///very inportant area lib info std
+         stdLbInfo_u_b_subDate_lab11.setText(lif.getUbsubdate());
+          }
+         
         }
         else if(event.getSource() == lab3){
         selmover.setVisible(true);
@@ -356,9 +370,16 @@ public class LBXMLController implements Initializable {
         yourlibinfo.setVisible(false);
         bookSearchpane.setVisible(false);
         student_t_lab.setText(std_typ);
-        local_currency_lab.setText(Double.toString(std_fine) + " BDT");
-        doller_currency_lab.setText("null" + " $");
-        eueo_currency_lab.setText("Null" + " EURO");
+        
+        local_currency_lab.setText(Double.toString(lstd.CanSeebdtFine(lif)) + " BDT");   /// can see local currency
+        doller_currency_lab.setText(Double.toString(lstd.calculateDollerCurrency(lif)) + " $");                                       ///can see doller currency
+        if(lif.getUtype().equals("local")){
+        eueo_currency_lab.setVisible(false);                        // need change // euro lab erase  kortay hobay
+        }
+        else{
+            eueo_currency_lab.setVisible(true);
+            eueo_currency_lab.setText(Double.toString(fstd.calculateEuroCurrency(lif)));                                    //can see euro currency
+        }
         
         }
         else if(event.getSource() == stdxlab1){
@@ -880,6 +901,9 @@ public class LBXMLController implements Initializable {
     @FXML
     private Label acc_std_typ;
     
+    @FXML
+    private TextField p_d_a_field;
+    
     int kk;
     
     @FXML
@@ -909,9 +933,15 @@ public class LBXMLController implements Initializable {
         
         for(Student std : stdList){
             if(std.getSTD_USERNAME().equals(acc_u_n_field.getText())){
-                 std.setDue(0.0);
+                 
+                 if(p_d_a_field.getText().equals("500")){
+                     std.setDue(0.0);
                  p_s_n_lab.setText("Due Paid Sucessful");
-                 System.out.println(std.getDue());
+                 
+                 }
+                 else{
+                     p_s_n_lab.setText("Entry Due Not Match!");
+                 }
                 
             }
             
@@ -1353,10 +1383,10 @@ public class LBXMLController implements Initializable {
         int fstdtotal = 0;
         double totaldue = 0.0;
         
-        for(Student s : stdList){
-            System.out.println(s.getStd_username() + " " + s.getDue());
-            System.out.println(s.slbinfo.getStdbooksubdate());
-        }
+        //for(Student s : stdList){
+            //System.out.println(s.getStd_username() + " " + s.getDue());
+            //System.out.println(s.slbinfo.getStdbooksubdate());
+        //}
           
         for(Student stdl : stdList){
          
@@ -1375,7 +1405,15 @@ public class LBXMLController implements Initializable {
             else{
                 stdl.setDue(0.0);
             }
+            
+            if(stdl.getDue() == 500.0){
+               fstdtotal++;
+               totaldue = totaldue + 500.0;
+              
+           }
         }
+        
+        
         finestdtable.setItems(FXCollections.observableArrayList( stdList));
         finestdtable.getItems().clear();
          finestdtable.getItems().addAll(stdList);
@@ -1385,10 +1423,6 @@ public class LBXMLController implements Initializable {
         TotalDueStdLab.setText(Double.toString(totaldue));
         
         
-        for(Student s : stdList){
-            System.out.println(s.getStd_username() + " " + s.getDue());
-            System.out.println(s.slbinfo.getStdbooksubdate());
-        }
         
         
     }
@@ -1409,6 +1443,12 @@ public class LBXMLController implements Initializable {
         }
            */
        // System.out.println("30/10/17".compareTo("01/12/17"));
+       
+       
+       fstd = new ForeigenStudent("","","");
+       lstd = new LocalStudent("","","");
+       lif= new StdInFo("","","","",0.0);
+       
     }    
     
 }
