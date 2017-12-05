@@ -28,6 +28,8 @@ public class Librarian {
     public void setLib_block_status(boolean lib_acc_lock){
         lib_block_status = lib_acc_lock;
     }
-    
+    public void canlogin(){
+        
+    }
     
 }

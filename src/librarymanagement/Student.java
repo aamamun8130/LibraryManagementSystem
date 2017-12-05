@@ -122,7 +122,7 @@ public abstract class Student {
     }
     
     public void SearchBook(){
-        
+         
     }
     
     public int SeeLbInfo(StdInFo si){

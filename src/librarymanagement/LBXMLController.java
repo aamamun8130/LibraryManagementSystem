@@ -486,7 +486,7 @@ public class LBXMLController implements Initializable {
             book_n_lab.setText(bk.getBookname());
             book_t_lab.setText(bk.getBooktype());
             book_i_lab.setText(bk.getBookid());
-            book_sno_lab.setText("none");
+            book_sno_lab.setText(Double.toString(bk.getBookselfno()));
             searchBookNoti_lab.setText("Book Found!");
             
         }
@@ -680,8 +680,27 @@ public class LBXMLController implements Initializable {
         submissionbookpane.setVisible(false);
         settingpane.setVisible(false);
         found = 0;
-        
         for(Student liststd : stdList){
+            if(jlb1.seeStdInformation(liststd,jlbsearchstdusernameField.getText())==1){
+                s_u_name_lab.setText(liststd.getSTD_USERNAME());
+                s_u_pass_lab.setText(liststd.getSTD_PASSWORD());
+                s_u_type_lab.setText(liststd.getSTD_TYPE());
+                s_u_borrbook_lab.setText(liststd.slbinfo.getStdbookname());
+                s_u_subdatebook_lab.setText(liststd.slbinfo.getStdbooksubdate());
+                s_u_fine_lab.setText(Double.toString(liststd.getDue()));  
+            }
+            else if(jlb1.seeStdInformation(liststd,jlbsearchstdusernameField.getText())==2){
+                s_u_name_lab.setText(liststd.getSTD_USERNAME());
+                 s_u_pass_lab.setText(liststd.getSTD_PASSWORD());
+                s_u_type_lab.setText(liststd.getSTD_TYPE());
+                s_u_borrbook_lab.setText(liststd.slbinfo.getStdbookname());
+                s_u_subdatebook_lab.setText(liststd.slbinfo.getStdbooksubdate());
+                 s_u_fine_lab.setText(Double.toString(liststd.getDue()));
+            }
+        }
+        
+        
+        /*for(Student liststd : stdList){
         if(jlbsearchstdusernameField.getText().equals(liststd.getSTD_USERNAME()) && liststd.getSTD_TYPE().equals("local")){
          s_u_name_lab.setText(liststd.getSTD_USERNAME());
          s_u_pass_lab.setText(liststd.getSTD_PASSWORD());
@@ -700,7 +719,7 @@ public class LBXMLController implements Initializable {
             
         }
         
-        }
+        }*/
         
         
     }
@@ -763,7 +782,7 @@ public class LBXMLController implements Initializable {
     void borrow_b_ButtonAction(ActionEvent event){
         
       for(Student sl : stdList){
-          if(jlbsearchstdusernameField.getText().equals(sl.getSTD_USERNAME()) && sl.getSTD_TYPE().equals("local")){
+          if( jlb1.giveBook(sl, jlbsearchstdusernameField.getText()) ==1 && sl.getSTD_TYPE().equals("local")){
               for(Book bk :BookList){
                   if(bk.getBookid().equals(borrowbookFeild.getText())){
                   sl.slbinfo.setStdbookname(bk.getBookname());
@@ -785,7 +804,7 @@ public class LBXMLController implements Initializable {
               
           }
           
-          else if(jlbsearchstdusernameField.getText().equals(sl.getSTD_USERNAME()) && sl.getSTD_TYPE().equals("foreigen")){
+          else if(jlb1.giveBook(sl, jlbsearchstdusernameField.getText()) ==2 && sl.getSTD_TYPE().equals("foreigen")){
               
               for(Book bk :BookList){
                   if(bk.getBookid().equals(borrowbookFeild.getText())){
@@ -827,20 +846,29 @@ public class LBXMLController implements Initializable {
         ff = 0;
 
     }
+    
+    
     int gg = 1;
     @FXML
-    void jlbsearchButtonAction(ActionEvent event){
-        for(Student liststd : stdList){
+    void jlbsearchButtonAction(ActionEvent event){                                       // jlb search std account
+        
+        if(jlb1.lbsearchStd(stdList,jlbsearchstdusernameField.getText())==1){
+          jlbstdsearrchnoti_lab.setText("Account Found!!!");  
+        }
+        else{
+          jlbstdsearrchnoti_lab.setText("Account Not Found!!!"); 
+        }
+        /*for(Student liststd : stdList){
         if(jlbsearchstdusernameField.getText().equals(liststd.getSTD_USERNAME()) && liststd.getSTD_TYPE().equals("local")){
            jlbstdsearrchnoti_lab.setText("Account Found!!!");
            ff = 1;
-           gg = 0;
+           //gg = 0;
          
         }
         else if(jlbsearchstdusernameField.getText().equals(liststd.getSTD_USERNAME()) && liststd.getSTD_TYPE().equals("foreigen")){
             jlbstdsearrchnoti_lab.setText("Account Found!!!");
           ff = 1;
-          gg = 0;
+         // gg = 0;
             
         }
         
@@ -851,7 +879,7 @@ public class LBXMLController implements Initializable {
         }
         else{
            ff = 0;
-        }
+        }*/
     }
     @FXML
     private Label subboookname_lab;
@@ -868,7 +896,7 @@ public class LBXMLController implements Initializable {
        
         for(Student liststd : stdList){
             
-        if(jlbsearchstdusernameField.getText().equals(liststd.getSTD_USERNAME()) && liststd.getSTD_TYPE().equals("local")){
+        if(jlb1.canTakeBookReturn(liststd, jlbsearchstdusernameField.getText()) ==1){
 
          subboookname_lab.setText("Clear");
          subboookid_lab.setText("Clear");
@@ -877,7 +905,7 @@ public class LBXMLController implements Initializable {
          bookSubmNotiLab.setText("History Clear!!!");
          found = 1;
         }
-        else if(jlbsearchstdusernameField.getText().equals(liststd.getSTD_USERNAME()) && liststd.getSTD_TYPE().equals("foreigen")){
+        else if(jlb1.canTakeBookReturn(liststd, jlbsearchstdusernameField.getText()) ==2){
          subboookname_lab.setText("Clear");
          subboookid_lab.setText("Clear");
          liststd.slbinfo.setStdbookname("NULL");
@@ -1536,7 +1564,6 @@ public class LBXMLController implements Initializable {
        // System.out.println("30/10/17".compareTo("01/12/17"));
        cs = new Counsellor();
        cstdinfo = FXCollections.observableArrayList();
-       
        fstd = new ForeigenStudent("","","");
        lstd = new LocalStudent("","","");
        lif= new StdInFo("","","","",0.0);
