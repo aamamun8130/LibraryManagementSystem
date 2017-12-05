@@ -16,6 +16,7 @@ public abstract class Student {
     StdLibraryInfo slbinfo;
     private double due;
     private String accountstatus;
+    public String coment;
     
     
     //Constuctor
@@ -23,6 +24,7 @@ public abstract class Student {
         this.std_password = std_password;
         this.std_username = new SimpleStringProperty(std_username);
         this.std_type = std_type;
+        coment="null";
         slbinfo = new StdLibraryInfo(p,q);
          this.due = 0.0;
          accountstatus = "NULL";

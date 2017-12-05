@@ -7,6 +7,7 @@ package librarymanagement;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXRadioButton;
+import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -43,6 +44,7 @@ public class LBXMLController implements Initializable {
         conn = DriverManager.getConnection("jdbc:sqlite:librarymanagement.sqlite");
     }
     StdInFo lif;
+    public String login_u_n_catcher;
    
     
     //student optoin all design controll start from
@@ -225,12 +227,18 @@ public class LBXMLController implements Initializable {
      @FXML
      private Label stypelab;
        
-       
+     @FXML
+     private Label comlabButton; 
+     
+     @FXML
+     private Pane commentpane;               
+
+
     
     @FXML
     void loginButton2Action(ActionEvent event) {
          //canLoginAccount(stdList,fore_std,loc_std,log_u_name_Id.getText(),log_p_word_Id.getText())
-     
+            login_u_n_catcher = log_u_name_Id.getText();
         if(fstd.canLoginAccount(stdList,fore_std,loc_std,log_u_name_Id.getText(),log_p_word_Id.getText(),lif)==0){
             plate.setVisible(true);
             loginNavigation.setVisible(false);
@@ -241,6 +249,7 @@ public class LBXMLController implements Initializable {
             stypelab.setText("foreigen");
             login = true;
             enp_sList = 1;
+            comlabButton.setVisible(true);
             
             assignStdInfo();     // asssign std info function calll
          }
@@ -254,6 +263,7 @@ public class LBXMLController implements Initializable {
             login = true;
             enp_sList = 1;
             stypelab.setText("local");
+            comlabButton.setVisible(false);
             assignStdInfo();       // asssign std info function calll
            }
          
@@ -283,6 +293,7 @@ public class LBXMLController implements Initializable {
         bookSearchpane.setVisible(true);
         yourlibinfo.setVisible(false);
         stdfinePane.setVisible(false);
+        commentpane.setVisible(false);
         }
     }
     
@@ -336,7 +347,6 @@ public class LBXMLController implements Initializable {
     private Label stdLbInfo_u_b_subDate_lab11;
      
              
-             
    //end
     
     
@@ -348,6 +358,7 @@ public class LBXMLController implements Initializable {
         bookSearchpane.setVisible(true);
         yourlibinfo.setVisible(false);
         stdfinePane.setVisible(false);
+        commentpane.setVisible(false);
         
         }
         else if(event.getSource() == lab2){
@@ -356,6 +367,7 @@ public class LBXMLController implements Initializable {
         yourlibinfo.setVisible(true);
         bookSearchpane.setVisible(false);
          stdfinePane.setVisible(false);
+         commentpane.setVisible(false);
           if(lstd.SeeLbInfo(lif)==1) {                                                                    // std see lib info function
          stdLbInfo_u_name_lab.setText(lif.getUname());
          stdLbInfo_u_b_name_lab1.setText(lif.getUbname());                     ///very inportant area lib info std
@@ -370,6 +382,7 @@ public class LBXMLController implements Initializable {
         yourlibinfo.setVisible(false);
         bookSearchpane.setVisible(false);
         student_t_lab.setText(std_typ);
+        commentpane.setVisible(false);
         
         local_currency_lab.setText(Double.toString(lstd.CanSeebdtFine(lif)) + " BDT");   /// can see local currency
         doller_currency_lab.setText(Double.toString(lstd.calculateDollerCurrency(lif)) + " $");                                       ///can see doller currency
@@ -405,6 +418,7 @@ public class LBXMLController implements Initializable {
         }
         else if(event.getSource() == stdxlab3){
             loginNavigation.setVisible(false);
+            
             if(q!=1){
              login=false;   
             }
@@ -412,7 +426,36 @@ public class LBXMLController implements Initializable {
             login_alarm.setText("");
             clearLoginField();
         }
+        
 
+    }
+    
+    @FXML
+    void act5(MouseEvent event){
+         if(event.getSource() == comlabButton){
+            commentpane.setVisible(true);
+            yourlibinfo.setVisible(false);
+            bookSearchpane.setVisible(false);
+            stdfinePane.setVisible(false);
+            comsubnotilab.setText("");
+            commentfield.setText("");
+        } 
+    }
+    @FXML
+    private JFXTextField commentfield;
+    
+    @FXML
+    private Label comsubnotilab;
+    
+    @FXML
+    void comsubButtonAction(ActionEvent event){
+       if(fstd.canComment(stdList,login_u_n_catcher,commentfield.getText())==1){
+           comsubnotilab.setText("Submission Sucessful!!");
+           commentfield.setText("");
+       }
+       else{
+           comsubnotilab.setText("Submiss Not Sucessful!!");
+       }
     }
     
     @FXML
@@ -908,7 +951,20 @@ public class LBXMLController implements Initializable {
     
     @FXML
     void accSearchButtonAction(ActionEvent event){
-        for(Student std : stdList){
+        if(acant.searchStudent(stdList,acc_u_n_field.getText())==1){
+            for(Student s : stdList){
+                if(s.getSTD_USERNAME().equals(acc_u_n_field.getText())){
+                 p_s_n_lab.setText("User Found!!");
+                acc_std_typ.setText(s.getSTD_TYPE());
+                a_l_c_lab.setText(Double.toString(s.getDue()) + " BDT");
+                }
+            }
+        }
+        else{
+             p_s_n_lab.setText("User Not Found!!");
+        }
+        
+       /* for(Student std : stdList){
             if(std.getSTD_USERNAME().equals(acc_u_n_field.getText())){
                p_s_n_lab.setText("User Found!!");
                 kk=1;
@@ -923,7 +979,7 @@ public class LBXMLController implements Initializable {
         }
         else{
             kk=0;
-        }
+        }*/
           
        }
     
@@ -931,7 +987,18 @@ public class LBXMLController implements Initializable {
     @FXML
     void accsubButtonAction(ActionEvent event){
         
-        for(Student std : stdList){
+       if(p_d_a_field.getText().equals("500")){
+           if(acant.canPayStdDue(stdList,acc_u_n_field.getText())==1){   //             pay due function        
+                p_s_n_lab.setText("Due Paid Sucessful");
+             }
+           else{
+                p_s_n_lab.setText("Account Not Founf!!");
+           }
+           }
+       else{
+           p_s_n_lab.setText("Entry Due Not Match!");
+       }
+        /*for(Student std : stdList){
             if(std.getSTD_USERNAME().equals(acc_u_n_field.getText())){
                  
                  if(p_d_a_field.getText().equals("500")){
@@ -945,7 +1012,7 @@ public class LBXMLController implements Initializable {
                 
             }
             
-        } 
+        } */
         
     }
     
@@ -1347,27 +1414,47 @@ public class LBXMLController implements Initializable {
       
     
      @FXML
-    private TableView<?> StdCommentTable;
+    private TableView<CommentStdInfo> StdCommentTable;
 
     @FXML
-    private TableColumn<?, ?> CommentStdUserName;
+    private TableColumn<CommentStdInfo, String> CommentStdUserName;
 
     @FXML
-    private TableColumn<?, ?> commentstdComment;
+    private TableColumn<CommentStdInfo, String> commentstdComment;
+    
+    
+    
+    ObservableList<CommentStdInfo> cstdinfo;
+    Counsellor cs;
+    
 
     @FXML
     void CommentStdListButtonAction(ActionEvent event) {
-
-    }
+        for(CommentStdInfo f : cstdinfo){
+            System.out.println(f.getCscomment());
+        }
+        System.out.println("hi");
+       cs.canCreateCommentStdList(stdList,cstdinfo);
+           
+       if(cs.canSeeCommentStdInfo(cstdinfo) ==1){
+           StdCommentTable.setItems(FXCollections.observableArrayList(cstdinfo));
+        StdCommentTable.getItems().clear();
+        StdCommentTable.getItems().addAll(cstdinfo);
+        CommentStdUserName.setCellValueFactory(new PropertyValueFactory<>("csname"));
+        commentstdComment.setCellValueFactory(new PropertyValueFactory<>("cscomment"));
+           
+       }
+       
+    }                                                                           // see std comment function
     
     @FXML
-    private TableView<Student> finestdtable;
+    private TableView<DueStdList> finestdtable;
 
     @FXML
-    private TableColumn<Student,String> finestdusernameclumn;
+    private TableColumn<DueStdList,String> finestdusernameclumn;
 
     @FXML
-    private TableColumn<Student, String> finestdduecolumn;
+    private TableColumn<DueStdList, String> finestdduecolumn;
     
     @FXML
     private Label TotalDueStdNoLab;
@@ -1377,6 +1464,9 @@ public class LBXMLController implements Initializable {
      
      int fstdtotal = 0;
      double totaldue = 0.0;
+     
+     FinanceManager fn = new FinanceManager();
+       ObservableList<DueStdList> duestdinfo = FXCollections.observableArrayList();
     
     @FXML
     void DueStudentListButtonAction(ActionEvent event){
@@ -1387,8 +1477,9 @@ public class LBXMLController implements Initializable {
             //System.out.println(s.getStd_username() + " " + s.getDue());
             //System.out.println(s.slbinfo.getStdbooksubdate());
         //}
-          
-        for(Student stdl : stdList){
+          fn.canCalculateStdDue(stdList);
+          fn.canCreateStdDueinfoList(stdList,duestdinfo);
+       /* for(Student stdl : stdList){
          
             if("17/12/01".compareTo(stdl.slbinfo.getStdbooksubdate()) > 0 && stdl.getAccountstatus().equals("NULL")  ){
                 stdl.setDue(500.0);
@@ -1412,15 +1503,15 @@ public class LBXMLController implements Initializable {
               
            }
         }
+        */
         
-        
-        finestdtable.setItems(FXCollections.observableArrayList( stdList));
+        finestdtable.setItems(FXCollections.observableArrayList(duestdinfo ));
         finestdtable.getItems().clear();
-         finestdtable.getItems().addAll(stdList);
-        finestdusernameclumn.setCellValueFactory(new PropertyValueFactory<>("std_username"));
-        finestdduecolumn.setCellValueFactory(new PropertyValueFactory<>("due"));
-        TotalDueStdNoLab.setText(Integer.toHexString(fstdtotal));
-        TotalDueStdLab.setText(Double.toString(totaldue));
+         finestdtable.getItems().addAll(duestdinfo);
+        finestdusernameclumn.setCellValueFactory(new PropertyValueFactory<>("uname"));
+        finestdduecolumn.setCellValueFactory(new PropertyValueFactory<>("sdue"));
+        TotalDueStdNoLab.setText(Integer.toHexString(fn.canCountDueStdNo(stdList)));
+        TotalDueStdLab.setText(Double.toString(fn.canCalculateTotalDue(stdList)));
         
         
         
@@ -1443,7 +1534,8 @@ public class LBXMLController implements Initializable {
         }
            */
        // System.out.println("30/10/17".compareTo("01/12/17"));
-       
+       cs = new Counsellor();
+       cstdinfo = FXCollections.observableArrayList();
        
        fstd = new ForeigenStudent("","","");
        lstd = new LocalStudent("","","");
