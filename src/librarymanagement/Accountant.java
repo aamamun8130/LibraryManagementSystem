@@ -4,7 +4,7 @@ package librarymanagement;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableListBase;
 
-public class Accountant {
+public class Accountant implements ISearchstudent{
     private String acc_name;
     private String acc_pass;
 

@@ -4,7 +4,7 @@ package librarymanagement;
 import java.util.Observable;
 import javafx.collections.ObservableList;
 
-public class FinanceManager {
+public class FinanceManager extends Authority{
     
     // constuctor
     

@@ -361,6 +361,16 @@
                   <Font size="13.0" />
                </font>
             </Label>
+            <Button fx:id="jlbSalaryButtonAction" layoutX="338.0" layoutY="52.0" mnemonicParsing="false" onAction="#jlbSalaryButtonAction" prefHeight="25.0" prefWidth="131.0" style="-fx-background-color: red;" text="Salary Details" />
+            <Pane fx:id="jlbsalpane" layoutX="338.0" layoutY="82.0" prefHeight="138.0" prefWidth="131.0" style="-fx-background-color: lightgray;" visible="false">
+               <children>
+                  <Label layoutX="16.0" layoutY="43.0" text="Salary:" />
+                  <Label layoutX="16.0" layoutY="76.0" text="Bonus:" />
+                  <Label fx:id="sal_lab" layoutX="55.0" layoutY="46.0" prefHeight="17.0" prefWidth="75.0" />
+                  <Label fx:id="b_lab" layoutX="56.0" layoutY="78.0" prefHeight="17.0" prefWidth="72.0" />
+                  <Label fx:id="exit_lab" layoutX="108.0" onMouseClicked="#act1" prefHeight="17.0" prefWidth="23.0" style="-fx-background-color: gray;" text="  X" />
+               </children>
+            </Pane>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="accountantNavigation" layoutX="281.0" layoutY="176.0" prefHeight="288.0" prefWidth="403.0" style="-fx-background-color: #911e01;" visible="false">
@@ -652,6 +662,46 @@
             <Label fx:id="TotalDueStdNoLab" layoutX="403.0" layoutY="200.0" prefHeight="17.0" prefWidth="72.0" />
          </children>
       </Pane>
-      <Label text="Label" />
+      <Pane fx:id="SlbHomePane" layoutX="241.0" layoutY="138.0" prefHeight="365.0" prefWidth="484.0" style="-fx-background-color: lightgray;" visible="false">
+         <children>
+            <Pane layoutX="15.0" layoutY="14.0" prefHeight="62.0" prefWidth="454.0" style="-fx-background-color: gray;">
+               <children>
+                  <Button layoutX="28.0" layoutY="16.0" mnemonicParsing="false" onAction="#SlbViewButAction" text="View Std Info" />
+                  <Button layoutX="146.0" layoutY="18.0" mnemonicParsing="false" onAction="#SlbAddBookButAction" text="Add Book" />
+                  <Button layoutX="238.0" layoutY="20.0" mnemonicParsing="false" onAction="#SlbSalButAction" text="Salary details" />
+                  <Button layoutX="341.0" layoutY="21.0" mnemonicParsing="false" onAction="#SlbLogoutButAction" text="LogOut" />
+               </children>
+            </Pane>
+            <TableView fx:id="slbTable" layoutX="90.0" layoutY="83.0" prefHeight="271.0" prefWidth="276.0" visible="false">
+              <columns>
+                <TableColumn fx:id="slbtabun" prefWidth="90.0" text="UserName" />
+                <TableColumn fx:id="slbtabpass" prefWidth="107.0" text="Password" />
+                  <TableColumn fx:id="slbtabdue" prefWidth="78.0" text="Due" />
+              </columns>
+            </TableView>
+            <Pane fx:id="slbsalarypane" layoutX="99.0" layoutY="83.0" prefHeight="271.0" prefWidth="290.0" visible="false">
+               <children>
+                  <Label layoutX="64.0" layoutY="89.0" text="Total Salary:" />
+                  <Label layoutX="64.0" layoutY="139.0" text="Eid Bonus:" />
+                  <Label fx:id="e_b_lab" layoutX="148.0" layoutY="140.0" prefHeight="17.0" prefWidth="85.0" />
+                  <Label fx:id="t_s_lab" layoutX="146.0" layoutY="92.0" prefHeight="17.0" prefWidth="90.0" />
+               </children>
+            </Pane>
+            <Pane fx:id="slbaddbookpane" layoutX="15.0" layoutY="87.0" prefHeight="265.0" prefWidth="454.0" style="-fx-background-color: gray;" visible="false">
+               <children>
+                  <Label layoutX="136.0" layoutY="41.0" text="Book Name" />
+                  <Label layoutX="138.0" layoutY="73.0" text="Book type" />
+                  <Label layoutX="137.0" layoutY="103.0" text="Book Id No" />
+                  <Label layoutX="136.0" layoutY="139.0" text="Bool Self No" />
+                  <TextField fx:id="b_name_field" layoutX="207.0" layoutY="37.0" />
+                  <TextField fx:id="b_type_field" layoutX="208.0" layoutY="69.0" />
+                  <TextField fx:id="b_id_field" layoutX="207.0" layoutY="100.0" />
+                  <TextField fx:id="b_selfno_field" layoutX="208.0" layoutY="134.0" />
+                  <Button fx:id="SeniorLbSubmitButtonAction" layoutX="300.0" layoutY="177.0" mnemonicParsing="false" onAction="#SeniorLbButtonAction" text="Submit" />
+               </children>
+            </Pane>
+            <Label fx:id="seni_sub_con_noti_lab" layoutX="114.0" layoutY="305.0" prefHeight="17.0" prefWidth="261.0" />
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

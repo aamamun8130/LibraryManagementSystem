@@ -10,9 +10,10 @@ import javafx.collections.ObservableList;
 //Abstract class
 
 public abstract class Student {
+    
     private SimpleStringProperty std_username;
-    private String std_password;
-    private String std_type;
+    private  SimpleStringProperty std_password;
+    private SimpleStringProperty std_type;
     StdLibraryInfo slbinfo;
     private double due;
     private String accountstatus;
@@ -20,10 +21,11 @@ public abstract class Student {
     
     
     //Constuctor
+    
     public Student(String std_username,String std_password,String std_type, String p, String q){
-        this.std_password = std_password;
+        this.std_password = new SimpleStringProperty(std_password);
         this.std_username = new SimpleStringProperty(std_username);
-        this.std_type = std_type;
+        this.std_type = new SimpleStringProperty(std_type);
         coment="null";
         slbinfo = new StdLibraryInfo(p,q);
          this.due = 0.0;
@@ -34,10 +36,10 @@ public abstract class Student {
     // Instance variable getter and setter start 
     
     String getSTD_TYPE(){
-        return std_type;
+        return std_type.get();
     }
     String getSTD_PASSWORD(){
-        return std_password;
+        return std_password.get();
     }
     String getSTD_USERNAME(){
         return std_username.get();
@@ -51,6 +53,14 @@ public abstract class Student {
         this.due = due;
     }
 
+    public String getStd_password() {
+        return std_password.get();
+    }
+
+    public String getStd_type() {
+        return std_type.get();
+    }
+   
     public double getDue() {
         return due;
     }
@@ -66,13 +76,7 @@ public abstract class Student {
     // Instance variable getter and setter end
     
     //All Method Start From
-    
-    public void canSearchBook(ObservableList<Book> bookLst ){
-        for(Book blist : bookLst){
-            
-        }
-        
-    }
+  
     
     public void createAccount(ObservableList<Student> sl,ForeigenStudent fs,String un, String ps){
         fs = new ForeigenStudent(un,ps,"foreigen");
@@ -121,8 +125,13 @@ public abstract class Student {
         return 3;
     }
     
-    public void SearchBook(){
-         
+    public int SearchBook(Book b, String bkn){
+ 
+            if(bkn.equals(b.getBookname())){
+                return 1;
+            }
+            
+            return 2;
     }
     
     public int SeeLbInfo(StdInFo si){
@@ -141,7 +150,7 @@ public abstract class Student {
     
     // Abstract Method
     
-    abstract double calculateDollerCurrency(StdInFo si);
+    abstract double calculateDollerCurrency(StdInFo si);                            ///  Abstract method
     
     // method end
     

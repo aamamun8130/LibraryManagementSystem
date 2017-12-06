@@ -43,6 +43,10 @@ public class LBXMLController implements Initializable {
         Class.forName("org.sqlite.JDBC");
         conn = DriverManager.getConnection("jdbc:sqlite:librarymanagement.sqlite");
     }
+    
+
+
+    
     StdInFo lif;
     public String login_u_n_catcher;
    
@@ -285,15 +289,29 @@ public class LBXMLController implements Initializable {
     
     @FXML
     void logoutAction(MouseEvent event) {
-        if(lstd.CanlogOut()){                                                  // Log out function call
-        login = false;
-        plate.setVisible(false);
-        selmover.setVisible(true);
-        selmover.setLayoutX(30.0);
-        bookSearchpane.setVisible(true);
-        yourlibinfo.setVisible(false);
-        stdfinePane.setVisible(false);
-        commentpane.setVisible(false);
+        if(loc_std==1){
+        if(lstd.CanlogOut()){                                                  // Log out function call  Student 
+          login = false;
+          plate.setVisible(false);
+          selmover.setVisible(true);
+          selmover.setLayoutX(30.0);
+          bookSearchpane.setVisible(true);
+          yourlibinfo.setVisible(false);
+          stdfinePane.setVisible(false);
+          commentpane.setVisible(false);
+        }
+              }
+        if(fore_std==1){
+          if(fstd.CanlogOut()){                                                  // Log out function call foreign std
+          login = false;
+          plate.setVisible(false);
+          selmover.setVisible(true);
+          selmover.setLayoutX(30.0);
+          bookSearchpane.setVisible(true);
+          yourlibinfo.setVisible(false);
+          stdfinePane.setVisible(false);
+          commentpane.setVisible(false);
+        }
         }
     }
     
@@ -426,7 +444,10 @@ public class LBXMLController implements Initializable {
             login_alarm.setText("");
             clearLoginField();
         }
-        
+        else if(event.getSource() == exit_lab){
+            jlbsalpane.setVisible(false);
+        }
+      
 
     }
     
@@ -479,29 +500,71 @@ public class LBXMLController implements Initializable {
     
     @FXML
     void searchBookButtonAction(ActionEvent event){
+        //lstd.SearchBook(bk,searchBookFeild.getText())
         
+        
+        
+      if(loc_std==1){  
         for(Book bk : BookList){
             enpt_BookListIdentifier = 1;
-        if(searchBookFeild.getText().equals(bk.getBookname())){
+        if(lstd.SearchBook(bk,searchBookFeild.getText())==1){                    ///  loc std book search method call
             book_n_lab.setText(bk.getBookname());
             book_t_lab.setText(bk.getBooktype());
             book_i_lab.setText(bk.getBookid());
             book_sno_lab.setText(Double.toString(bk.getBookselfno()));
             searchBookNoti_lab.setText("Book Found!");
-            
+            enpt_BookListIdentifier=2;
         }
+        
         else{
+            enpt_BookListIdentifier = 4;
+        }
+        
+        
+        }
+        
+        if(enpt_BookListIdentifier==4){
            searchBookNoti_lab.setText("Book Not Found!");
         }
-        
-        }
-        
+       
         if(enpt_BookListIdentifier == 0){
             searchBookNoti_lab.setText("No Book List Found!");
         }
         
     }
-    
+      
+      
+      
+      if(fore_std==1){  
+        for(Book bk : BookList){
+            enpt_BookListIdentifier = 1;
+        if(lstd.SearchBook(bk,searchBookFeild.getText())==1){                    ///  foreigen std book search method call
+            book_n_lab.setText(bk.getBookname());
+            book_t_lab.setText(bk.getBooktype());
+            book_i_lab.setText(bk.getBookid());
+            book_sno_lab.setText(Double.toString(bk.getBookselfno()));
+            searchBookNoti_lab.setText("Book Found!");
+            enpt_BookListIdentifier=2;
+        }
+        
+        else{
+            enpt_BookListIdentifier = 4;
+        }
+        
+        
+        }
+        
+        if(enpt_BookListIdentifier==4){
+           searchBookNoti_lab.setText("Book Not Found!");
+        }
+       
+        if(enpt_BookListIdentifier == 0){
+            searchBookNoti_lab.setText("No Book List Found!");
+        }
+        
+    }
+      
+    }
     
         
             
@@ -606,14 +669,12 @@ public class LBXMLController implements Initializable {
     
     
     @FXML
-    void librarianLoginAction(ActionEvent event) {
+    void librarianLoginAction(ActionEvent event) {     ///          librarian log in function call
         try{
-        if(slb == 1 && !slb1.getLib_block_status() && lib_username_field.getText().equals(slb1.getLib_u_name()) && lib_password_field.getText().equals(slb1.getLib_p_word())){
-            librarianafterloginancorepane.setVisible(true);
-            librarianNavigation.setVisible(false);
-             lib_login_alarm_lab.setText("");
+        if(slb == 1 && !slb1.getLib_block_status() && slb1.canlogin(slb1, lib_username_field.getText(), lib_password_field.getText())){
+            SlbHomePane.setVisible(true);
         }
-        else if(jlb ==1 && !jlb1.getLib_block_status() && lib_username_field.getText().equals(jlb1.getLib_u_name()) && lib_password_field.getText().equals(jlb1.getLib_p_word())){
+        else if(jlb ==1 && !jlb1.getLib_block_status() && jlb1.canlogin(jlb1, lib_username_field.getText(), lib_password_field.getText())){
             librarianafterloginancorepane.setVisible(true);
             librarianNavigation.setVisible(false);
             lib_login_alarm_lab.setText("");
@@ -852,7 +913,7 @@ public class LBXMLController implements Initializable {
     @FXML
     void jlbsearchButtonAction(ActionEvent event){                                       // jlb search std account
         
-        if(jlb1.lbsearchStd(stdList,jlbsearchstdusernameField.getText())==1){
+        if(jlb1.searchStudent(stdList,jlbsearchstdusernameField.getText())==1){
           jlbstdsearrchnoti_lab.setText("Account Found!!!");  
         }
         else{
@@ -923,6 +984,125 @@ public class LBXMLController implements Initializable {
         }
         
     }
+    
+    @FXML
+    private Label sal_lab;
+    
+    @FXML
+    private Label b_lab;
+    
+    @FXML
+    private Label exit_lab;
+    @FXML
+    private Pane jlbsalpane;
+    
+    
+    @FXML
+    void jlbSalaryButtonAction(ActionEvent event){
+        System.out.println("ok");
+        jlb1.calculateSalary();
+        jlb1.calculateBonus();
+        jlbsalpane.setVisible(true);
+        sal_lab.setText(Double.toString(jlb1.salary));
+        b_lab.setText(Double.toString(jlb1.bonus));
+    }
+    
+    // seniorlb control design start
+      @FXML
+    private TextField b_name_field;
+       @FXML
+    private TextField b_type_field;
+        @FXML
+    private TextField b_id_field;
+         @FXML
+    private TextField b_selfno_field;
+    
+         @FXML
+    private Label seni_sub_con_noti_lab;
+    
+         @FXML
+    void SeniorLbButtonAction(ActionEvent event){
+        slb1.canAddBook(BookList,b_name_field.getText(), b_id_field.getText(), b_type_field.getText(), Integer.parseInt(b_selfno_field.getText()));
+        //System.out.println("hhjjfdj");
+        //slb1.canAddBook(BookList, b_name_field.getText(), b_type_field.getText(), b_id_field.getText(),Integer.parseInt(b_selfno_field.getText()));
+        //System.out.println("hhjjfdj");
+        seni_sub_con_noti_lab.setText("Add Sucessful!!");
+        //System.out.println(b_name_field.getText() +" "+b_type_field.getText()+" "+b_id_field.getText()+" "+b_selfno_field.getText());
+    }
+    
+     @FXML
+    private Pane SlbHomePane;
+     
+     @FXML
+    private Pane slbsalarypane;
+     
+      @FXML
+    private Pane slbaddbookpane;
+     
+     
+     
+     @FXML
+    private Label t_s_lab;
+     
+     @FXML
+    private Label e_b_lab;
+    
+     @FXML
+    private TableView<Student> slbTable;
+
+    @FXML
+    private TableColumn<Student,String> slbtabun;
+
+    @FXML
+    private TableColumn<Student,String> slbtabpass;
+
+    @FXML
+    private TableColumn<Student,String> slbtabdue;
+    
+    @FXML
+    void SlbSalButAction(ActionEvent event){
+        slbsalarypane.setVisible(true);
+         slbTable.setVisible(false);
+         slbaddbookpane.setVisible(false);
+         //jlb1.calculateSalary();
+         //jlb1.calculateBonus();
+         slb1.calculateSalary();
+         slb1.calculateBonus();
+         t_s_lab.setText(Double.toString(slb1.salary));
+         e_b_lab.setText(Double.toString(slb1.bonus));
+    }
+    
+    @FXML
+    void SlbLogoutButAction(ActionEvent event){
+        if(slb1.canLogOut()){
+        SlbHomePane.setVisible(false);
+        slbsalarypane.setVisible(false);
+         slbTable.setVisible(false);
+         slbaddbookpane.setVisible(false);
+         
+        }
+    }
+    @FXML
+    void SlbViewButAction(ActionEvent event){
+        slbsalarypane.setVisible(false);
+         slbTable.setVisible(true);
+         slbaddbookpane.setVisible(false);
+         slbTable.setItems(FXCollections.observableArrayList(stdList));
+        slbTable.getItems().clear();
+         slbTable.getItems().addAll(stdList);
+        slbtabun.setCellValueFactory(new PropertyValueFactory<>("std_username"));
+        slbtabpass.setCellValueFactory(new PropertyValueFactory<>("std_password"));
+        slbtabdue.setCellValueFactory(new PropertyValueFactory<>("std_type"));
+    }
+    @FXML
+    void SlbAddBookButAction(ActionEvent event){
+        slbsalarypane.setVisible(false);
+         slbTable.setVisible(false);
+         slbaddbookpane.setVisible(true);
+    }
+    
+    
+    
     
     
       // librarian design control ..........end 
@@ -1389,16 +1569,21 @@ public class LBXMLController implements Initializable {
     @FXML
     private Label set_lb_u_p_noti_lab;
     
+    Admin ad = new Admin();
+    
+    
      @FXML
     void set_u_p_submitButtonAction(ActionEvent event) {
         
         if(set_seniorLb_radio_id.isSelected()){
-            slb1 = new SeniorLibrarian(set_lb_u_name_field.getText(),set_lb_p_word_field.getText());
+            slb1 = ad.canCreateSeniorLbaccount(set_lb_u_name_field.getText(),set_lb_p_word_field.getText());
+            //slb1 = new SeniorLibrarian(set_lb_u_name_field.getText(),set_lb_p_word_field.getText());
             set_lb_u_p_noti_lab.setText("Submission Successful!!!");
         }
         
         else if(set_juniorLb_radio_id.isSelected()){
-            jlb1 = new JuniorLibrarin(set_lb_u_name_field.getText(),set_lb_p_word_field.getText());
+            jlb1 = ad.canCreateJuniorLbaccount(set_lb_u_name_field.getText(), set_lb_p_word_field.getText());
+            //jlb1 = new JuniorLibrarin(set_lb_u_name_field.getText(),set_lb_p_word_field.getText());
             set_lb_u_p_noti_lab.setText("Submission Successful!!!");
         }
         
@@ -1430,7 +1615,9 @@ public class LBXMLController implements Initializable {
     
     @FXML
     void adminsetacc_u_pButtonAction(ActionEvent event){
-       acant = new Accountant(set_acc_usernamefield.getText(),set_acc_passfield.getText());
+        
+        acant = ad.canCreateAccountantId(set_acc_usernamefield.getText(),set_acc_passfield.getText());
+       //acant = new Accountant(set_acc_usernamefield.getText(),set_acc_passfield.getText());
        acc_noti_lab.setText("Set Sucessful!!");
     }
     

@@ -1,7 +1,7 @@
 
 package librarymanagement;
 import javafx.collections.ObservableList;
-public class Counsellor {
+public class Counsellor extends Authority{
     
     
     public void canCreateCommentStdList(ObservableList<Student> p,ObservableList<CommentStdInfo> s_c_info){
