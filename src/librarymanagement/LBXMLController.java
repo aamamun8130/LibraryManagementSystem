@@ -1569,7 +1569,7 @@ public class LBXMLController implements Initializable {
     @FXML
     private Label set_lb_u_p_noti_lab;
     
-    Admin ad = new Admin();
+    Admin ad = new Admin("Ali","as3455");
     
     
      @FXML
@@ -1680,7 +1680,7 @@ public class LBXMLController implements Initializable {
      int fstdtotal = 0;
      double totaldue = 0.0;
      
-     FinanceManager fn = new FinanceManager();
+     FinanceManager fn = new FinanceManager("kamal","GH98","Junior");
        ObservableList<DueStdList> duestdinfo = FXCollections.observableArrayList();
     
     @FXML
@@ -1749,7 +1749,7 @@ public class LBXMLController implements Initializable {
         }
            */
        // System.out.println("30/10/17".compareTo("01/12/17"));
-       cs = new Counsellor();
+       cs = new Counsellor("Faruq","VHG564");
        cstdinfo = FXCollections.observableArrayList();
        fstd = new ForeigenStudent("","","");
        lstd = new LocalStudent("","","");

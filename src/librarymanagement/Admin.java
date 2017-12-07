@@ -2,6 +2,11 @@
 package librarymanagement;
 
 public class Admin extends Authority{
+
+    public Admin(String name, String id) {
+        super(name, id);
+    }
+    
     
     
   public SeniorLibrarian canCreateSeniorLbaccount(String un, String pass){

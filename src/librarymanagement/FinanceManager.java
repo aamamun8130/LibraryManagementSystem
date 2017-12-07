@@ -6,6 +6,19 @@ import javafx.collections.ObservableList;
 
 public class FinanceManager extends Authority{
     
+    private String designation;
+
+    public FinanceManager(String name, String id) {
+        super(name, id);
+    }
+    
+    public FinanceManager(String name, String id , String designation) {
+        super(name, id);
+        this.designation = designation;
+        
+    }
+    
+    
     // constuctor
     
     public void canSeeDueStdList(){

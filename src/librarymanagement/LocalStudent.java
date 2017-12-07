@@ -7,7 +7,7 @@ public class LocalStudent extends Student{
         super(std_username,std_password,std_type,"NULL","NULL");
     }
     
-    double calculateDollerCurrency(StdInFo si){
+    public double calculateDollerCurrency(StdInFo si){
       return si.getUdue()/85.0;  
     }
 }

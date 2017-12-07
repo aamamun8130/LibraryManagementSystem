@@ -13,10 +13,10 @@ public class ForeigenStudent extends Student{
         super(std_username,std_password,std_type,"NULL","NULL");
     }
     
-    double calculateDollerCurrency(StdInFo si){
+    public double calculateDollerCurrency(StdInFo si){
       return (getDue()*23.0)/90.0;  
     }
-    double calculateEuroCurrency(StdInFo si){
+    public double calculateEuroCurrency(StdInFo si){
      return (si.getUdue()*23.0)/123.0;
     }
 

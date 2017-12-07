@@ -13,14 +13,14 @@ public class SeniorLibrarian extends JuniorLibrarin{
     public void seestdInf(){
         
     }
-    public void calculateSalary(){
+   public void calculateSalary(){
        salary = salary()*3 + eidbonus + (super.bonus * 0.4); 
     }
     public void calculateBonus(){                               //////////////over ride here
-        bonus = eidbonus + (super.bonus * 0.2);
+        bonus = eidbonus + (super.bonus * 0.2); 
     }
     //login in function
     
-    // add book funcyion
+    // add book 
     
 }
