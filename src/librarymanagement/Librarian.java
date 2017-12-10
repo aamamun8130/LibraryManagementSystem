@@ -14,8 +14,7 @@ public abstract class Librarian {
     public Librarian(String lib_u_name, String lib_p_word){
         this.lib_u_name = lib_u_name;
         this.lib_p_word = lib_p_word;
-        //salary = 15000.0;
-       // eidbonus=0.30;
+        
     }
     
     public String getLib_u_name(){

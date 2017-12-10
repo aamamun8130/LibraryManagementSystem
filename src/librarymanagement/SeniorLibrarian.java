@@ -1,7 +1,9 @@
 
 package librarymanagement;
 
-public class SeniorLibrarian extends JuniorLibrarin{
+import javafx.collections.ObservableList;
+
+public class SeniorLibrarian extends JuniorLibrarin {
     public double salary;
     public double bonus;
     // constuctor
@@ -10,8 +12,8 @@ public class SeniorLibrarian extends JuniorLibrarin{
         super(lib_u_name,lib_p_word);
     }
     
-    public void seestdInf(){
-        
+    public ObservableList<Student> seestdInf(ObservableList<Student> s){
+        return s;
     }
    public void calculateSalary(){
        salary = salary()*3 + eidbonus + (super.bonus * 0.4); 
@@ -22,5 +24,7 @@ public class SeniorLibrarian extends JuniorLibrarin{
     //login in function
     
     // add book 
+    
+   
     
 }

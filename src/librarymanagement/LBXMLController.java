@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package librarymanagement;
 
 import com.jfoenix.controls.JFXButton;
@@ -31,10 +27,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
-/**
- *
- * @author Abdur Rahman
- */
 public class LBXMLController implements Initializable {
     //Database Controll
     static PreparedStatement ps = null;
@@ -51,7 +43,7 @@ public class LBXMLController implements Initializable {
     public String login_u_n_catcher;
    
     
-    //student optoin all design controll start from
+   //student optoin all design controll start from
     
         
     boolean login = false;
@@ -1087,9 +1079,9 @@ public class LBXMLController implements Initializable {
         slbsalarypane.setVisible(false);
          slbTable.setVisible(true);
          slbaddbookpane.setVisible(false);
-         slbTable.setItems(FXCollections.observableArrayList(stdList));
+         slbTable.setItems(FXCollections.observableArrayList(slb1.seestdInf(stdList)));
         slbTable.getItems().clear();
-         slbTable.getItems().addAll(stdList);
+         slbTable.getItems().addAll(slb1.seestdInf(stdList));
         slbtabun.setCellValueFactory(new PropertyValueFactory<>("std_username"));
         slbtabpass.setCellValueFactory(new PropertyValueFactory<>("std_password"));
         slbtabdue.setCellValueFactory(new PropertyValueFactory<>("std_type"));

@@ -1,7 +1,7 @@
 
 package librarymanagement;
 
-public class Authority {
+public abstract class Authority {
     private String name;
     private String id;
 
