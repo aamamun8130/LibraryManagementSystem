@@ -1727,6 +1727,98 @@ public class LBXMLController implements Initializable {
         
     
       // Authority design control ..........end 
+    
+    // service employee controll start from
+    
+    @FXML
+    private Label e_sal_lab;
+    
+    @FXML
+    private Label e_ei_bon_lab;
+    @FXML
+    private Label e_ex_bon_lab;
+    @FXML
+    private Label re_sal_lab;
+    @FXML
+    private Label re_ei_bon_lab;
+    @FXML
+    private Label re_ex_bon_lab;
+    @FXML
+    private Label st_sal_lab;
+    @FXML
+    private Label st_ei_lab;
+    @FXML
+    private Label st_ex_lab;
+    
+    @FXML
+    private TextField exe_sal_field;
+    @FXML
+    private TextField ine_sal_field;
+    @FXML
+    private TextField exe_eid_bon_field;
+    @FXML
+    private TextField ine_eid_bon_field;
+    @FXML
+    private TextField exe_ext_bon_field;
+    @FXML
+    private TextField reg_ext_bon_field;
+    @FXML
+    private TextField sts_ext_bon_field;
+    
+    @FXML
+    private Pane se_pane;
+    
+    ExtServEmployee exep;
+    StdThingsSaver ts;
+    EntryRegister er;
+    
+    
+    @FXML
+    void se_but_action(ActionEvent event){
+        se_pane.setVisible(true);
+    }
+    @FXML
+    void se_sub_but_action(ActionEvent event){
+        exep.calculateEidBonus(Double.parseDouble(exe_sal_field.getText()), Double.parseDouble(exe_eid_bon_field.getText()));
+        exep.ExtraBonus(Double.parseDouble(exe_sal_field.getText()), Double.parseDouble(exe_ext_bon_field.getText()));
+        e_sal_lab.setText(Double.toString(exep.calculateTotalSalary(Double.parseDouble(exe_sal_field.getText()))));
+        e_ei_bon_lab.setText(Double.toString(exep.bon));
+        e_ex_bon_lab.setText(Double.toString(exep.exb));
+        
+        
+        er.calculateEidBonus(Double.parseDouble(ine_sal_field.getText()), Double.parseDouble(exe_eid_bon_field.getText()));
+        er.ExtraBonus(Double.parseDouble(ine_sal_field.getText()),  Double.parseDouble(reg_ext_bon_field.getText()));
+        re_sal_lab.setText(Double.toString(er.calculateTotalSalary(Double.parseDouble(ine_sal_field.getText()))));
+        re_ei_bon_lab.setText(Double.toString(er.bonn));
+        re_ex_bon_lab.setText(Double.toString(er.exb));
+        
+        ts.calculateEidBonus(Double.parseDouble(ine_sal_field.getText()),  Double.parseDouble(exe_eid_bon_field.getText()));
+        ts.ExtraBonus(Double.parseDouble(ine_sal_field.getText()),Double.parseDouble(sts_ext_bon_field.getText()));
+        st_sal_lab.setText(Double.toString(ts.calculateTotalSalary(Double.parseDouble(ine_sal_field.getText()))));
+        st_ei_lab.setText(Double.toString(ts.bonn));
+        st_ex_lab.setText(Double.toString(ts.exb));
+        
+        
+    }
+    
+    @FXML
+    void se_logout_but_action(ActionEvent event){
+       se_pane.setVisible(false);
+       exe_eid_bon_field.setText("");
+       exe_sal_field.setText("");
+       ine_sal_field.setText("");
+       ine_eid_bon_field.setText("");
+       exe_ext_bon_field.setText("");
+       reg_ext_bon_field.setText("");
+       sts_ext_bon_field.setText("");
+    } 
+
+    
+    
+    
+    // service employee controll end here
+    
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -1746,6 +1838,10 @@ public class LBXMLController implements Initializable {
        fstd = new ForeigenStudent("","","");
        lstd = new LocalStudent("","","");
        lif= new StdInFo("","","","",0.0);
+       exep = new ExtServEmployee("kamal","re4546");
+       ts = new StdThingsSaver("Ali","fe345");
+       er = new EntryRegister("jamal","fg546456");
+       
        
     }    
     
